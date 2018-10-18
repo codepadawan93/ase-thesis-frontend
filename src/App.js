@@ -6,6 +6,8 @@ import "./theme/vendor/simple-line-icons/css/simple-line-icons.css";
 import "./theme/css/landing-page.min.css";
 
 class App extends Component {
+  _server = "https://mighty-peak-97805.herokuapp.com/api/";
+
   constructor() {
     super();
     this.state = {
@@ -17,6 +19,14 @@ class App extends Component {
     this.setState({
       messageList: [...this.state.messageList, message]
     });
+    fetch(this._server + message.data.text)
+      .then(response => {
+        response.json();
+      })
+      .then(data => {
+        console.log(data);
+      })
+      .catch(err => console.error(err));
   };
 
   _sendMessage(text) {
