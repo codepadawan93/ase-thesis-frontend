@@ -3,9 +3,6 @@ import React, { Component } from "react";
 class Masthead extends Component {
   constructor() {
     super();
-    this.state = {
-      messageList: []
-    };
   }
 
   render() {
