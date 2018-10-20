@@ -100,17 +100,15 @@ class App extends Component {
 
         <Footer _handleNavigate={this._handleNavigate} />
 
-        <div>
-          <Launcher
-            agentProfile={{
-              teamName: "Ionut",
-              imageUrl: logo //"https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png"
-            }}
-            onMessageWasSent={this._onMessageWasSent}
-            messageList={this.state.messageList}
-            showEmoji={true}
-          />
-        </div>
+        <Launcher
+          agentProfile={{
+            teamName: "Ionut",
+            imageUrl: logo //"https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png"
+          }}
+          onMessageWasSent={this._onMessageWasSent}
+          messageList={this.state.messageList}
+          showEmoji={true}
+        />
       </div>
     );
   }
