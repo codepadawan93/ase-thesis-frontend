@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Navbar from "./components/Navbar";
 import Masthead from "./components/Masthead";
 import Features from "./components/Features";
 import Footer from "./components/Footer";
@@ -91,21 +92,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <nav className="navbar navbar-light bg-light static-top">
-          <div className="container">
-            <a className="navbar-brand" href="#">
-              <img src={logo} width="35" height="35" alt="" className="mr-3" />
-              Your next vacation
-            </a>
-            <a
-              className="btn btn-primary"
-              href="#"
-              onClick={e => this._handleNavigate(e)}
-            >
-              Sign in
-            </a>
-          </div>
-        </nav>
+        <Navbar _handleNavigate={this._handleNavigate} />
 
         <Masthead />
 
