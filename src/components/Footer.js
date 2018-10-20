@@ -8,47 +8,48 @@ const Footer = props => {
           <div className="col-lg-6 h-100 text-center text-lg-left my-auto">
             <ul className="list-inline mb-2">
               <li className="list-inline-item">
-                <a onClick={e => e.preventDefault()} href="/">
+                <a onClick={e => props._handleNavigate(e)} href="/">
                   About
                 </a>
               </li>
               <li className="list-inline-item">&sdot;</li>
               <li className="list-inline-item">
-                <a onClick={e => e.preventDefault()} href="/">
+                <a onClick={e => props._handleNavigate(e)} href="/">
                   Contact
                 </a>
               </li>
               <li className="list-inline-item">&sdot;</li>
               <li className="list-inline-item">
-                <a onClick={e => e.preventDefault()} href="/">
+                <a onClick={e => props._handleNavigate(e)} href="/">
                   Terms of Use
                 </a>
               </li>
               <li className="list-inline-item">&sdot;</li>
               <li className="list-inline-item">
-                <a onClick={e => e.preventDefault()} href="/">
+                <a onClick={e => props._handleNavigate(e)} href="/">
                   Privacy Policy
                 </a>
               </li>
             </ul>
             <p className="text-muted small mb-4 mb-lg-0">
-              &copy; Your Website 2018. All Rights Reserved.
+              &copy; Your next vacation {new Date().getFullYear()}. All Rights
+              Reserved.
             </p>
           </div>
           <div className="col-lg-6 h-100 text-center text-lg-right my-auto">
             <ul className="list-inline mb-0">
               <li className="list-inline-item mr-3">
-                <a href="#">
+                <a href="#" onClick={e => props._handleNavigate(e)}>
                   <i className="fab fa-facebook fa-2x fa-fw" />
                 </a>
               </li>
               <li className="list-inline-item mr-3">
-                <a href="#">
+                <a href="#" onClick={e => props._handleNavigate(e)}>
                   <i className="fab fa-twitter-square fa-2x fa-fw" />
                 </a>
               </li>
               <li className="list-inline-item">
-                <a href="#">
+                <a href="#" onClick={e => props._handleNavigate(e)}>
                   <i className="fab fa-instagram fa-2x fa-fw" />
                 </a>
               </li>

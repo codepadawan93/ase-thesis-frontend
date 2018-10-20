@@ -3,6 +3,11 @@ import Masthead from "./components/Masthead";
 import Features from "./components/Features";
 import Footer from "./components/Footer";
 import { Launcher } from "react-chat-window";
+import toastr from "toastr";
+
+import logo from "./theme/img/your_next_vacation.jpg";
+
+import "toastr/build/toastr.min.css";
 import "./theme/vendor/bootstrap/css/bootstrap.min.css";
 import "./theme/vendor/fontawesome-free/css/all.min.css";
 import "./theme/vendor/simple-line-icons/css/simple-line-icons.css";
@@ -22,14 +27,45 @@ class App extends Component {
     this.setState({
       messageList: [...this.state.messageList, message]
     });
+
     fetch(this._server + message.data.text)
       .then(response => {
-        response.json();
+        return response.json();
       })
       .then(data => {
-        console.log(data);
+        if (data && data.success === true) {
+          const receivedMessage = {
+            author: "Ionut",
+            data: {},
+            type: null
+          };
+
+          // Text message
+          if (data.type === 1) {
+            receivedMessage.data = {
+              text: data.message
+            };
+            receivedMessage.type = "text";
+          } else {
+            // TODO:: implement other types of messgaes as well
+            receivedMessage.data = {};
+            receivedMessage.type = "something else...";
+          }
+
+          setTimeout(() => {
+            this.setState({
+              messageList: [...this.state.messageList, receivedMessage]
+            });
+          }, 1400);
+        } else {
+          console.error(data.error);
+          toastr.error("An error has occurred: " + data.error);
+        }
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error(err);
+        toastr.error("An error has occurred: " + err);
+      });
   };
 
   _sendMessage = text => {
@@ -47,15 +83,25 @@ class App extends Component {
     }
   };
 
+  _handleNavigate = event => {
+    event.preventDefault();
+    toastr.warning("Coming soon...");
+  };
+
   render() {
     return (
       <div className="App">
         <nav className="navbar navbar-light bg-light static-top">
           <div className="container">
             <a className="navbar-brand" href="#">
+              <img src={logo} width="35" height="35" alt="" className="mr-3" />
               Your next vacation
             </a>
-            <a className="btn btn-primary" href="#">
+            <a
+              className="btn btn-primary"
+              href="#"
+              onClick={e => this._handleNavigate(e)}
+            >
               Sign in
             </a>
           </div>
@@ -65,18 +111,17 @@ class App extends Component {
 
         <Features />
 
-        <Footer />
+        <Footer _handleNavigate={this._handleNavigate} />
 
         <div>
           <Launcher
             agentProfile={{
               teamName: "Ionut",
-              imageUrl:
-                "https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png"
+              imageUrl: logo //"https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png"
             }}
             onMessageWasSent={this._onMessageWasSent}
             messageList={this.state.messageList}
-            showEmoji={false}
+            showEmoji={true}
           />
         </div>
       </div>
