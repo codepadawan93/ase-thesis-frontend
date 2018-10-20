@@ -19,7 +19,7 @@ class Masthead extends Component {
                 <div className="form-row">
                   <div className="col-12 col-md-9 mb-2 mb-md-0">
                     <input
-                      type="email"
+                      type="text"
                       className="form-control form-control-lg"
                       placeholder="Enter your destination..."
                     />
