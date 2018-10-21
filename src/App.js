@@ -6,7 +6,7 @@ import Footer from "./components/Footer";
 import { Launcher } from "react-chat-window";
 import toastr from "toastr";
 
-import logo from "./theme/img/your_next_vacation.jpg";
+import logo from "./theme/img/your_next_vacation.png";
 
 import "toastr/build/toastr.min.css";
 import "./theme/vendor/bootstrap/css/bootstrap.min.css";
