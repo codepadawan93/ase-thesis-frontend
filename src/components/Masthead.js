@@ -3,7 +3,15 @@ import React, { Component } from "react";
 class Masthead extends Component {
   constructor() {
     super();
+    this.destinationInput = React.createRef();
   }
+
+  _handleSubmit = event => {
+    event.preventDefault();
+    if (this.destinationInput.current.value !== "") {
+      this.props._handleSubmit(event);
+    }
+  };
 
   render() {
     return (
@@ -15,10 +23,15 @@ class Masthead extends Component {
               <h1 className="mb-5">Where will you go next?</h1>
             </div>
             <div className="col-md-10 col-lg-8 col-xl-7 mx-auto">
-              <form onSubmit={e => e.preventDefault()}>
+              <form
+                onSubmit={e => {
+                  this._handleSubmit(e);
+                }}
+              >
                 <div className="form-row">
                   <div className="col-12 col-md-9 mb-2 mb-md-0">
                     <input
+                      ref={this.destinationInput}
                       type="text"
                       className="form-control form-control-lg"
                       placeholder="Enter your destination..."
