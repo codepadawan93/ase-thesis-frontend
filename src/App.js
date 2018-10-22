@@ -19,10 +19,18 @@ class App extends Component {
 
   constructor() {
     super();
+    // Create a reference - we will save the cghat window here
+    this.chatWindow = React.createRef();
     this.state = {
       messageList: []
     };
   }
+
+  _triggerChatWindow = event => {
+    // Manually call the chat window's handleClick method
+    this.chatWindow.current.handleClick();
+    //TODO::add the message
+  };
 
   _onMessageWasSent = message => {
     this.setState({
@@ -94,13 +102,14 @@ class App extends Component {
       <div className="App">
         <Navbar _handleNavigate={this._handleNavigate} />
 
-        <Masthead />
+        <Masthead _handleSubmit={this._triggerChatWindow} />
 
         <Features />
 
         <Footer _handleNavigate={this._handleNavigate} />
 
         <Launcher
+          ref={this.chatWindow}
           agentProfile={{
             teamName: "Ionut",
             imageUrl: logo //"https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png"
