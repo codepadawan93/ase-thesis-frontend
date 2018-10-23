@@ -19,17 +19,59 @@ class App extends Component {
 
   constructor() {
     super();
-    // Create a reference - we will save the cghat window here
+    // Create a reference - we will save the chat window here
     this.chatWindow = React.createRef();
     this.state = {
       messageList: []
     };
   }
 
+  componentDidMount = () => {
+    window.addEventListener("beforeunload", this._handleLeavePage);
+    const messageHistoryJSON = localStorage.getItem("messageHistory");
+    // Restore chat history from browser
+    if (messageHistoryJSON) {
+      const messageHistory = JSON.parse(messageHistoryJSON);
+      this.setState({ messageList: messageHistory.messageList });
+    }
+  };
+
+  _handleLeavePage = () => {
+    // Save history to browser
+    const messageHistory = {
+      messageList: this.state.messageList
+    };
+    localStorage.setItem("messageHistory", JSON.stringify(messageHistory));
+  };
+
   _triggerChatWindow = event => {
-    // Manually call the chat window's handleClick method
+    if (this.chatWindow.current.state.isOpen) {
+      return;
+    }
     this.chatWindow.current.handleClick();
-    //TODO::add the message
+    const formData = new FormData(event.target);
+    const term = formData.get("term");
+
+    let message = {
+      author: null,
+      type: "text",
+      data: { text: null }
+    };
+
+    if (term !== "") {
+      message.author = "me";
+      message.data.text = term;
+      this.setState({
+        messageList: [...this.state.messageList, message]
+      });
+      this._onMessageWasSent(message);
+    } else if (this.state.messageList.length === 0) {
+      message.author = "them";
+      message.data.text = "Hello! I am Ionut. How can I help you today?";
+      this.setState({
+        messageList: [...this.state.messageList, message]
+      });
+    }
   };
 
   _onMessageWasSent = message => {
@@ -55,10 +97,14 @@ class App extends Component {
               text: data.message
             };
             receivedMessage.type = "text";
+          } else if (data.type === 2) {
+            receivedMessage.data = {
+              content: data.message
+            };
+            receivedMessage.type = "emoji";
           } else {
             // TODO:: implement other types of messgaes as well
-            receivedMessage.data = {};
-            receivedMessage.type = "something else...";
+            toastr.error("Not yet implemented");
           }
 
           setTimeout(() => {
@@ -77,21 +123,6 @@ class App extends Component {
       });
   };
 
-  _sendMessage = text => {
-    if (text.length > 0) {
-      this.setState({
-        messageList: [
-          ...this.state.messageList,
-          {
-            author: "them",
-            type: "text",
-            data: { text }
-          }
-        ]
-      });
-    }
-  };
-
   _handleNavigate = event => {
     event.preventDefault();
     toastr.warning("Coming soon...");
@@ -100,19 +131,26 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Navbar _handleNavigate={this._handleNavigate} />
+        <Navbar handleNavigate={this._handleNavigate} />
 
-        <Masthead _handleSubmit={this._triggerChatWindow} />
+        <Masthead
+          placeholder="Enter your destination..."
+          disabled={false}
+          handleSubmit={this._triggerChatWindow}
+        />
 
         <Features />
 
-        <Footer _handleNavigate={this._handleNavigate} />
+        <Footer
+          handleNavigate={this._handleNavigate}
+          facebookHref="http://facebook.com/"
+        />
 
         <Launcher
           ref={this.chatWindow}
           agentProfile={{
             teamName: "Ionut",
-            imageUrl: logo //"https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png"
+            imageUrl: logo
           }}
           onMessageWasSent={this._onMessageWasSent}
           messageList={this.state.messageList}

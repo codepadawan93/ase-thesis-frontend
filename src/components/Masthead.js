@@ -1,16 +1,15 @@
 import React, { Component } from "react";
 
 class Masthead extends Component {
-  constructor() {
+  constructor(props) {
     super();
     this.destinationInput = React.createRef();
   }
 
   _handleSubmit = event => {
     event.preventDefault();
-    if (this.destinationInput.current.value !== "") {
-      this.props._handleSubmit(event);
-    }
+    this.props.handleSubmit(event);
+    this.destinationInput.current.value = "";
   };
 
   render() {
@@ -34,13 +33,15 @@ class Masthead extends Component {
                       ref={this.destinationInput}
                       type="text"
                       className="form-control form-control-lg"
-                      placeholder="Enter your destination..."
+                      name="term"
+                      placeholder={this.props.placeholder}
                     />
                   </div>
                   <div className="col-12 col-md-3">
                     <button
                       type="submit"
                       className="btn btn-block btn-lg btn-primary"
+                      disabled={this.props.disabled}
                     >
                       Ask Ionut
                     </button>
