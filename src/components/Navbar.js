@@ -12,7 +12,7 @@ const Navbar = props => {
         <a
           className="btn btn-primary"
           href="#"
-          onClick={e => props._handleNavigate(e)}
+          onClick={e => props.handleNavigate(e)}
         >
           Sign in
         </a>
