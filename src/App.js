@@ -15,8 +15,10 @@ import "./theme/vendor/simple-line-icons/css/simple-line-icons.css";
 import "./theme/css/landing-page.min.css";
 
 class App extends Component {
+  // TODO::obscure these from client-accessible code
   _server = "https://mighty-peak-97805.herokuapp.com/api/";
-
+  _username = "adminuser";
+  _password = "adminpass";
   constructor() {
     super();
     // Create a reference - we will save the chat window here
@@ -79,7 +81,13 @@ class App extends Component {
       messageList: [...this.state.messageList, message]
     });
 
-    fetch(this._server + message.data.text)
+    fetch(this._server + message.data.text, {
+      // mode: "no-cors",
+      credentials: "include",
+      headers: new Headers({
+        Authorization: "Basic " + btoa(`${this._username}:${this._password}`)
+      })
+    })
       .then(response => {
         return response.json();
       })
